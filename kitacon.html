@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" lang="en" />
+		<title>Kenshiro Returns - Kita Con</title>
+
+		<style type="text/css">
+			body { 
+				color: #666;
+				font-family: Arial, sans-serif;
+				margin: 0; 
+				padding: 0;
+				position: relative;
+			}
+			div,
+			h1,
+			li,
+			span,
+			ul { display: block; }
+			h1 { 
+				font-size: 24px;
+				text-align: center; 
+			}
+			ul { 
+				list-style-type: none; 
+				padding: 0;
+			}
+
+
+			/* Countdown */
+			#countdown { 
+				height: 450px;
+				left: 50%;
+				margin: -225px 0 0 -225px;
+				position: absolute;
+				top: 50%;
+				width: 450px;
+			}
+			#kenshiro { 
+				background: url('images/kenshiro.gif') no-repeat;
+				height: 300px;
+				margin: 0 0 16px 52px;
+				width: 380px;
+			}
+			#time { 
+				height: 38px;
+				margin: 0 auto;
+				width: 277px;
+			}
+			#time li {
+				float: left;
+				margin-left: 15px;	
+			}
+			#time .first { margin-left: 0; }
+			#time span { text-align: center; }
+			.time { 
+				background: #DDD;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				margin-bottom: 15px;
+				padding: 10px 0;
+				width: 50px
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="countdown">
+			<h1>He Will Return...</h1>
+			<div id="kenshiro"></div>
+			<ul id="time">
+				<li class="first">
+					<span class="time" id="days">00</span>
+					<span>Days</span>
+				</li>
+				<li>
+					<span class="time" id="hours">00</span>
+					<span>Hours</span>
+				</li>
+				<li>
+					<span class="time" id="minutes">00</span>
+					<span>Mins</span>
+				</li>
+				<li>
+					<span class="time" id="seconds">00</span>
+					<span>Secs</span>
+				</li>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			(function () {
+				'use strict';
+
+				var countdown = {};
+
+				countdown.setHeight = function () { document.body.style.height = window.innerHeight + 'px';  };
+
+				countdown.timeRemaining = function (endDate) {
+					var dur = Date.parse(endDate) - Date.parse(new Date()), //Work out how long is left
+						days = Math.floor(dur / (1000 * 60 * 60 * 24)), //Days
+						hours = Math.floor((dur / (1000 * 60 * 60)) % 24), //Hours
+						minutes = Math.floor((dur / 1000 / 60) % 60), //Minutes
+						seconds = Math.floor((dur / 1000) % 60); //Seconds
+
+					//Return the data as an object
+					return {
+						dur: dur,
+						days: days > 9 ? days : '0' + days,
+						hours: hours > 9 ? hours : '0' + hours,
+						minutes: minutes > 9 ? minutes : '0' + minutes,
+						seconds: seconds > 9 ? seconds : '0' + seconds
+					};
+				};
+
+				countdown.init = function () {
+					var self = this;
+
+					this.setHeight(); //Set the body height
+
+					var time = setInterval(function () {
+						var timeObj = self.timeRemaining('2016-03-31'); //Get the time object
+
+						//If it is the date
+						if (timeObj.dur <= 0) {
+							clearInterval(time); //Clear the countdown
+						} else {
+							//Set the HTML every second
+							document.getElementById('days').innerHTML = timeObj.days;
+							document.getElementById('hours').innerHTML = timeObj.hours;
+							document.getElementById('minutes').innerHTML = timeObj.minutes;
+							document.getElementById('seconds').innerHTML = timeObj.seconds;
+						}
+					}, 1000);
+
+					window.onresize = this.setHeight; //Set the height on window resize
+				};
+
+				countdown.init();
+				
+			}());
+		</script>
+	</body>
+</html>
